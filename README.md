@@ -15,12 +15,12 @@ This approach is very similar to what http://www.twitter-rss.com/ page does. Two
  * it doesn't refresh often enough for my needs
  * only supports user timelines, not searches, as I wanted
 
-1.- git clone https://github.com/cpina/twitter2rss.git
-2.- pip install twython     # or `easy_instal feedparser`l
-3.- pip install feedparser  # or `easy_install feedparser`
-3.- read config.py (contains instructions how to get the `oauth_tokens`)
-4.- Test with `./user_timeline.py` and `./search.py`
-5.- In the Apache configuration I enabled `mod_python` for the directory where
+1. git clone https://github.com/cpina/twitter2rss.git
+2. pip install twython     # or `easy_instal feedparser`l
+3. pip install feedparser  # or `easy_install feedparser`
+3. read config.py (contains instructions how to get the `oauth_tokens`)
+4. Test with `./user_timeline.py` and `./search.py`
+5. In the Apache configuration I enabled `mod_python` for the directory where
 I copied the scripts:
 <pre>
     <Directory /var/www/carles.pina.cat/twitter>
