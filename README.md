@@ -15,6 +15,19 @@ This approach is very similar to what http://www.twitter-rss.com/ page does. Two
  * it doesn't refresh often enough for my needs
  * only supports user timelines, not searches, as I wanted
 
+Main Features
+-------------
+ * No database required (everything is fetched from Twitter. Yes,
+   this could cause too many requests)
+ * I'm afraid that not much error handling
+ * 2 endpoints:
+     http://your-server/twitter/user_timeline.py?screen_name=YourFriend
+     http://your-server/twitter/search.py?q=mendeley
+ * By default: the output is for RSS readers. Add &format=json and the output
+   is in Json.
+
+Installation / Usage
+--------------------
 1. git clone https://github.com/cpina/twitter2rss.git
 2. pip install twython     # or `easy_instal feedparser`l
 3. pip install feedparser  # or `easy_install feedparser`
