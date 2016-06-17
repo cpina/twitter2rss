@@ -3,6 +3,7 @@
 from twitter2rss import Twitter2Rss
 from twython import Twython
 import config
+import json
 import utils
 
 # Copyright Carles Pina i Estany <carles@pina.cat> 2013
@@ -22,39 +23,31 @@ import utils
 # You should have received a copy of the GNU Affero General Public License
 # along with twitter2rss.  If not, see <http://www.gnu.org/licenses/>.
 
-def get_user_timeline(screen_name):
-    """Returns the feed for this screen_name."""
+def get_search(term):
+    """Searches for term and returns the result from Twython."""
     twython = Twython(config.consumer_key, config.consumer_secret,
         config.access_token, config.access_token_secret)
 
-    user_timeline = twython.get_user_timeline(screen_name=screen_name)
+    search = twython.search(q=term)
 
-    return user_timeline
+    return search
 
-def get_rss(user_timeline, screen_name):
-    rss_params = {}
+def get_rss(term):
+    rss_config = {}
 
-    rss_params['title'] = 'Twitter / %s' % (screen_name)
-    rss_params['link'] = 'https://www.twitter.com/%s' % (screen_name)
-    rss_params['author'] = screen_name
+    rss_config['title'] = 'Twitter Search for %s' % (term)
+    rss_config['link'] = ''
+    rss_config['description'] = 'Proxy between Twitter API and RSS'
 
-    twitter2rss = Twitter2Rss(rss_params)
+    twitter2rss = Twitter2Rss(rss_config)
 
-    for tweet in user_timeline:
+    for tweet in get_search(term)['statuses']:
         twitter2rss.add_tweet_from_twython(tweet)
 
-    return twitter2rss.rss()
-
-def index(req):
-    """Process the CGI request."""
-    screen_name = req.form['screen_name'].value
-
-    user_time_line = get_user_timeline(screen_name)
-
-    utils.write_to_req(req, get_rss, user_time_line, screen_name)
+    return twitter2rss.get_rss()
 
 if __name__ == '__main__':
     utils.check_configuration()
-    # Poor's man test
-    search = get_user_timeline('rvidal')
-    print get_rss(search, 'rvidal')
+
+    # Poor man test
+    print(get_rss('mendeley'))

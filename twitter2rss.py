@@ -1,9 +1,8 @@
-
 import datetime
-import feedformatter
+import PyRSS2Gen
 import json
 
-# Copyright Carles Pina i Estany <carles@pina.cat> 2013
+# Copyright Carles Pina i Estany <carles@pina.cat> 2013, 2016
 #
 # This file is part of twitter2rss
 #
@@ -25,19 +24,13 @@ class Twitter2Rss():
        The users needs to call Twitter2Rss.add_tweet_from_twython()
     """
     def __init__(self, rss_config):
-        """Creates the new object based on rss_config."""
-        self.feed = feedformatter.Feed()
-
-        self.feed.feed['title'] = rss_config.get('title', 'Twitter RSS')
-        self.feed.feed['link'] = rss_config.get('link',
-            'http://www.twitter.com')
-
-        self.feed.feed['author'] = rss_config.get('author', 'Twitter feed')
-        self.feed.feed['description'] = 'Proxy between Twitter API and RSS'
+        """ Saves the rss_config to be used on the generating step. """
+        self._rss_config = rss_config
+        self._rss_items = []
 
     def add_tweet_from_twython(self, twython):
         """Converts a Twython tweet and converts to the RSS format."""
-        text = twython['text'].encode('ascii', 'ignore')
+        text = twython['text'] # .encode('ascii', 'ignore')
         screen_name = twython['user']['screen_name']
         created_at = datetime.datetime.strptime(
             twython['created_at'],'%a %b %d %H:%M:%S +0000 %Y').timetuple()
@@ -49,29 +42,35 @@ class Twitter2Rss():
         tweet['text'] = text
         tweet['link'] = url
         tweet['url'] = url
-        tweet['pubDate'] = created_at
         tweet['guid'] = str(id_str)
         tweet['author'] = twython['user']['screen_name']
 
         self._add_tweet(tweet)
 
-    def rss(self):
+    def get_rss(self):
         """Returns the RSS."""
-        return self.feed.format_rss2_string(pretty=True)
+
+        rss = PyRSS2Gen.RSS2(
+            title = self._rss_config.get('title', 'Twitter RSS'),
+            link = self._rss_config.get('link', 'http://www.twitter.com'),
+            description = self._rss_config.get('description', 'Proxy between Twitter API and RSS'),
+            lastBuildDate = datetime.datetime.now(),
+            items = self._rss_items
+        )
+
+        return rss.to_xml('utf-8')
 
     def _add_tweet(self, tweet):
         """Adds a Tweet. into the feed."""
-        feed_item = {}
 
-        text = tweet.get('text','Twitter without text').\
-            encode('ascii', 'ignore')
+        text = tweet.get('text', 'Twitter without text')
 
-        feed_item['title'] = text
-        feed_item['description'] = text
-        feed_item['link'] = tweet.get('url', 'Some link')
-        feed_item['pubDate'] = tweet.get('pubDate', None)
-        feed_item['guid'] = tweet.get('guid', 'Some guid')
-        feed_item['author'] = tweet.get('author', 'The Author2')
+        item = PyRSS2Gen.RSSItem(
+            title = text,
+            link = tweet.get('url', 'Twitter without link'),
+            description = text,
+            guid = PyRSS2Gen.Guid(tweet.get('guid', 'Some guid')),
+            pubDate = tweet.get('pubDate', None)
+        )
 
-        self.feed.items.append(feed_item)
-
+        self._rss_items.append(item)
