@@ -6,7 +6,7 @@ import config
 import json
 import utils
 
-# Copyright Carles Pina i Estany <carles@pina.cat> 2013
+# Copyright Carles Pina i Estany <carles@pina.cat> 2013, 2016
 #
 # This file is part of twitter2rss
 #

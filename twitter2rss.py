@@ -30,7 +30,7 @@ class Twitter2Rss():
 
     def add_tweet_from_twython(self, twython):
         """Converts a Twython tweet and converts to the RSS format."""
-        text = twython['text'] # .encode('ascii', 'ignore')
+        text = twython['text']
         screen_name = twython['user']['screen_name']
         created_at = datetime.datetime.strptime(
             twython['created_at'],'%a %b %d %H:%M:%S +0000 %Y').timetuple()
@@ -44,6 +44,7 @@ class Twitter2Rss():
         tweet['url'] = url
         tweet['guid'] = str(id_str)
         tweet['author'] = twython['user']['screen_name']
+        tweet['pubDate'] = twython['created_at']
 
         self._add_tweet(tweet)
 

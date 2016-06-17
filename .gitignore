@@ -34,3 +34,6 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Only for this project to avoid uploading the authentication tokens
+config.py
