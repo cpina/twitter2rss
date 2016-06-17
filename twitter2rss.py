@@ -71,7 +71,8 @@ class Twitter2Rss():
             link = tweet.get('url', 'Twitter without link'),
             description = text,
             guid = PyRSS2Gen.Guid(tweet.get('guid', 'Some guid')),
-            pubDate = tweet.get('pubDate', None)
+            pubDate = tweet.get('pubDate', None),
+            author = tweet.get('author', None)
         )
 
         self._rss_items.append(item)
