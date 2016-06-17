@@ -8,17 +8,3 @@ def check_configuration():
         print('Check config.py file and write the Twitter keys there.')
 
         sys.exit(1)
-
-def get_jsonp(content):
-    return 'twitts(' + json.dumps(content) + ')'
-
-def write_to_req(req, get_rss, search, term):
-    if req.form.has_key('format'):
-        output_format = req.form['format'].value
-    else:
-        output_format = 'rss'
-
-    if output_format == 'rss':
-        req.write(get_rss(search, term))
-    elif output_format == 'json' or output_format == 'jsonp':
-        req.write(get_jsonp(search))
