@@ -22,5 +22,3 @@ def search(term):
 @app.route('/user_timeline/<screen_name>')
 def user_timeline(screen_name):
     return twitter_user_timeline.get_rss(screen_name)
-
-
