@@ -1,12 +1,19 @@
-from app import app
-
 from twitter2rss import Twitter2Rss
+from flask import Flask
 import PyRSS2Gen
 import config
 import json
 import utils
 import twitter_user_timeline
 import twitter_search
+
+# Use the system with:
+#   gunicorn main:app
+# or:
+#   export FLASK_APP=main.py
+#   flask run
+
+app = Flask(__name__)
 
 @app.route('/search/<term>')
 def search(term):
