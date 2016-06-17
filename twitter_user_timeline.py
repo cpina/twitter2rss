@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 from twitter2rss import Twitter2Rss
 from twython import Twython
