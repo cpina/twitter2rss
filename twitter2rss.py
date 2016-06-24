@@ -55,7 +55,6 @@ class Twitter2Rss():
             title = self._rss_config.get('title', 'Twitter RSS'),
             link = self._rss_config.get('link', 'http://www.twitter.com'),
             description = self._rss_config.get('description', 'Proxy between Twitter API and RSS'),
-            lastBuildDate = datetime.datetime.now(),
             items = self._rss_items
         )
 
