@@ -33,7 +33,7 @@ class Twitter2Rss():
         text = twython['text']
         screen_name = twython['user']['screen_name']
         created_at = datetime.datetime.strptime(
-            twython['created_at'],'%a %b %d %H:%M:%S +0000 %Y').timetuple()
+            twython['created_at'],'%a %b %d %H:%M:%S +0000 %Y')
         id_str = twython['id_str']
         url = 'https://twitter.com/%s/status/%s' % (screen_name, id_str)
 
@@ -44,7 +44,7 @@ class Twitter2Rss():
         tweet['url'] = url
         tweet['guid'] = str(id_str)
         tweet['author'] = twython['user']['screen_name']
-        tweet['pubDate'] = twython['created_at']
+        tweet['pubDate'] = created_at
 
         self._add_tweet(tweet)
 
