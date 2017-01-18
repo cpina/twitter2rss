@@ -27,8 +27,11 @@ def get_search(term):
     """Searches for term and returns the result from Twython."""
     twython = Twython(config.consumer_key, config.consumer_secret,
         config.access_token, config.access_token_secret)
-
-    search = twython.search(q=term)
+    
+    # it is important to specify the language and the output tweet number.
+    # They could implement these parameters to be passed to twitter_search.py query lang count
+    # according to your language preferences
+    search = twython.search(q=term, lang='it', count='30')
 
     return search
 
@@ -49,5 +52,5 @@ def get_rss(term):
 if __name__ == '__main__':
     utils.check_configuration()
 
-    # Poor man test
-    print(get_rss('mendeley'))
+    # twitter_search.py query
+    print(get_rss(str(sys.argv[1])))
